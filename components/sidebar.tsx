@@ -55,7 +55,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         isExpanded ? "w-64" : "w-24",
       )}
     >
-      <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+      <div
+        className={clsx(
+          "p-4 border-b border-gray-200 flex items-center",
+          isExpanded ? "justify-between" : "justify-center",
+        )}
+      >
         {isExpanded && (
           <h2 className="text-lg font-bold text-gray-900">Resume Builder</h2>
         )}
@@ -86,7 +91,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onClick={() => setActiveSection(section.id as any)}
                 className={clsx(
-                  "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+                  "w-full flex items-center  gap-3 px-2 py-2 rounded-lg transition-colors",
+                  isExpanded ? "justify-start" : "justify-center",
                   isActive
                     ? "bg-blue-600 text-white shadow-md"
                     : "text-gray-700 hover:bg-gray-200",
@@ -108,7 +114,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </p>
           )}
 
-          <div className="flex gap-2">
+          <div
+            className={clsx(
+              "flex",
+              isExpanded ? "grid grid-cols-2 gap-2" : "grid grid-cols-1",
+            )}
+          >
             <button
               onClick={undo}
               disabled={historyIndex === 0}
@@ -150,7 +161,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onCustomizationClick}
             className={clsx(
-              "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+              "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ",
+              isExpanded ? "justify-start" : "justify-center",
               showCustomization
                 ? "bg-purple-600 text-white shadow-md"
                 : "text-gray-700 hover:bg-gray-200",

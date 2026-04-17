@@ -67,13 +67,13 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
           <div className="flex-1 ">
             <h1
               className="text-4xl font-bold mb-1"
-              style={{ color: primaryColor }}
+              style={{ color: primaryColor, fontFamily: fontFamily }}
             >
               {data.personalInfo.fullName || "Your Name"}
             </h1>
             <p
               style={{ fontFamily: fontFamily }}
-              className="text-lg opacity-75 max-h-[150px] overflow-hidden"
+              className="text-sm leading-5 -tracking-[-0.5px]  overflow-hidden"
             >
               {data.personalInfo.summary || "Professional Summary"}
             </p>
