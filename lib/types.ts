@@ -98,7 +98,18 @@ export interface CustomizationSettings {
   theme: "minimal" | "professional" | "creative";
   primaryColor: string;
   secondaryColor: string;
-  fontFamily: "sans" | "serif" | "mono";
+  fontFamily:
+    | "sans"
+    | "serif"
+    | "monospace"
+    | "poppins"
+    | "roboto"
+    | "lato"
+    | "montserrat"
+    | "open-sans"
+    | "raleway"
+    | "cursive"
+    | "source-sans-pro";
   fontSize: "small" | "medium" | "large";
   spacing: "compact" | "normal" | "relaxed";
   darkMode: boolean;
@@ -119,57 +130,66 @@ export interface ResumeState {
   // Data
   resume: ResumeData;
   customization: CustomizationSettings;
-  
+
   // UI State
   activeSection: keyof Omit<ResumeData, "personalInfo"> | "personalInfo";
   sectionOrder: Array<keyof Omit<ResumeData, "personalInfo"> | "personalInfo">;
-  
+
   // Undo/Redo
   history: ResumeData[];
   historyIndex: number;
-  
+
   // Actions
   updatePersonalInfo: (info: Partial<PersonalInfo>) => void;
   addEducation: (education: EducationEntry) => void;
   updateEducation: (id: string, education: Partial<EducationEntry>) => void;
   removeEducation: (id: string) => void;
-  
+
   addExperience: (experience: ExperienceEntry) => void;
   updateExperience: (id: string, experience: Partial<ExperienceEntry>) => void;
   removeExperience: (id: string) => void;
-  
+
   addSkill: (skill: Skill) => void;
   updateSkill: (id: string, skill: Partial<Skill>) => void;
   removeSkill: (id: string) => void;
-  
+
   addProject: (project: ProjectEntry) => void;
   updateProject: (id: string, project: Partial<ProjectEntry>) => void;
   removeProject: (id: string) => void;
-  
+
   addCertification: (cert: CertificationEntry) => void;
   updateCertification: (id: string, cert: Partial<CertificationEntry>) => void;
   removeCertification: (id: string) => void;
-  
+
   addLanguage: (language: LanguageEntry) => void;
   updateLanguage: (id: string, language: Partial<LanguageEntry>) => void;
   removeLanguage: (id: string) => void;
-  
+
   addCustomSection: (section: CustomSectionEntry) => void;
-  updateCustomSection: (id: string, section: Partial<CustomSectionEntry>) => void;
+  updateCustomSection: (
+    id: string,
+    section: Partial<CustomSectionEntry>,
+  ) => void;
   removeCustomSection: (id: string) => void;
-  
+
   // Customization
   updateCustomization: (settings: Partial<CustomizationSettings>) => void;
-  toggleSectionVisibility: (section: keyof CustomizationSettings["sectionsVisibility"]) => void;
-  
+  toggleSectionVisibility: (
+    section: keyof CustomizationSettings["sectionsVisibility"],
+  ) => void;
+
   // Section Management
-  setActiveSection: (section: keyof Omit<ResumeData, "personalInfo"> | "personalInfo") => void;
-  reorderSections: (newOrder: typeof ResumeData.prototype) => void;
-  
+  setActiveSection: (
+    section: keyof Omit<ResumeData, "personalInfo"> | "personalInfo",
+  ) => void;
+  reorderSections: (
+    newOrder: Array<keyof Omit<ResumeData, "personalInfo"> | "personalInfo">,
+  ) => void;
+
   // Undo/Redo
   undo: () => void;
   redo: () => void;
-  
+
   // Import/Export
   importData: (data: ResumeData) => void;
   exportData: () => ResumeData;

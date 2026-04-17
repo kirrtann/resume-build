@@ -1,0 +1,17 @@
+@media print {
+  .print-only {
+    display: block;
+  }
+  .Print-style {
+    font-family: var(--customization-font-family);
+    color: var(--customization-primary-color);
+    background-color: var(--customization-secondary-color);
+    font-family: var(--customization-font-family);
+    font-size: var(--customization-font-size);
+    padding: 20px;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}

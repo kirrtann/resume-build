@@ -100,7 +100,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         education: state.resume.education.map((e) =>
-          e.id === id ? { ...e, ...education } : e
+          e.id === id ? { ...e, ...education } : e,
         ),
       };
       return {
@@ -145,7 +145,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         experience: state.resume.experience.map((e) =>
-          e.id === id ? { ...e, ...experience } : e
+          e.id === id ? { ...e, ...experience } : e,
         ),
       };
       return {
@@ -190,7 +190,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         skills: state.resume.skills.map((s) =>
-          s.id === id ? { ...s, ...skill } : s
+          s.id === id ? { ...s, ...skill } : s,
         ),
       };
       return {
@@ -235,7 +235,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         projects: state.resume.projects.map((p) =>
-          p.id === id ? { ...p, ...project } : p
+          p.id === id ? { ...p, ...project } : p,
         ),
       };
       return {
@@ -280,7 +280,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         certifications: state.resume.certifications.map((c) =>
-          c.id === id ? { ...c, ...cert } : c
+          c.id === id ? { ...c, ...cert } : c,
         ),
       };
       return {
@@ -295,9 +295,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     set((state) => {
       const updated = {
         ...state.resume,
-        certifications: state.resume.certifications.filter(
-          (c) => c.id !== id
-        ),
+        certifications: state.resume.certifications.filter((c) => c.id !== id),
       };
       return {
         resume: updated,
@@ -327,7 +325,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         languages: state.resume.languages.map((l) =>
-          l.id === id ? { ...l, ...language } : l
+          l.id === id ? { ...l, ...language } : l,
         ),
       };
       return {
@@ -372,7 +370,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       const updated = {
         ...state.resume,
         customSections: state.resume.customSections.map((cs) =>
-          cs.id === id ? { ...cs, ...section } : cs
+          cs.id === id ? { ...cs, ...section } : cs,
         ),
       };
       return {
@@ -387,7 +385,9 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     set((state) => {
       const updated = {
         ...state.resume,
-        customSections: state.resume.customSections.filter((cs) => cs.id !== id),
+        customSections: state.resume.customSections.filter(
+          (cs) => cs.id !== id,
+        ),
       };
       return {
         resume: updated,
@@ -425,6 +425,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
 
   reorderSections: (newOrder) => {
     set(() => ({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sectionOrder: newOrder as any,
     }));
   },
@@ -477,7 +478,10 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
 export const useResumeLocalStorage = () => {
   const STORAGE_KEY = "resume_builder_data";
 
-  const saveToLocalStorage = (data: ResumeData, customization: CustomizationSettings) => {
+  const saveToLocalStorage = (
+    data: ResumeData,
+    customization: CustomizationSettings,
+  ) => {
     try {
       const dataToStore = { resume: data, customization };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
@@ -486,7 +490,10 @@ export const useResumeLocalStorage = () => {
     }
   };
 
-  const loadFromLocalStorage = (): { resume: ResumeData; customization: CustomizationSettings } | null => {
+  const loadFromLocalStorage = (): {
+    resume: ResumeData;
+    customization: CustomizationSettings;
+  } | null => {
     try {
       const data = localStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : null;

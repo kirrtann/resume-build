@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import { useResumeStore, useResumeLocalStorage } from "@/lib/resume-store";
 import { Sidebar } from "@/components/sidebar";
 import { ResumePreview } from "@/components/resume-preview";
@@ -20,23 +21,22 @@ import { SectionCard } from "@/components/form-inputs";
 export default function Home() {
   const [showCustomization, setShowCustomization] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
-  const {
-    resume,
-    customization,
-    activeSection,
-    setActiveSection,
-  } = useResumeStore();
+  const { resume, customization, activeSection } = useResumeStore();
 
   const { saveToLocalStorage, loadFromLocalStorage } = useResumeLocalStorage();
+  const printRef = useRef<HTMLDivElement>(null);
 
-  // Load from localStorage on mount
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: resume.personalInfo.fullName
+      ? `${resume.personalInfo.fullName.replace(/\\s+/g, "_")}_Resume`
+      : "Resume",
+  });
+
   useEffect(() => {
-    setIsMounted(true);
     const saved = loadFromLocalStorage();
     if (saved) {
-      // Load saved data into store
       useResumeStore.setState({
         resume: saved.resume,
         customization: saved.customization,
@@ -44,20 +44,13 @@ export default function Home() {
     }
   }, []);
 
-  // Auto-save to localStorage whenever data changes
   useEffect(() => {
-    if (isMounted) {
-      const timer = setTimeout(() => {
-        saveToLocalStorage(resume, customization);
-      }, 1000);
+    const timer = setTimeout(() => {
+      saveToLocalStorage(resume, customization);
+    }, 1000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [resume, customization, isMounted]);
-
-  if (!isMounted) {
-    return null; // Prevent hydration mismatch
-  }
+    return () => clearTimeout(timer);
+  }, [resume, customization]);
 
   const renderActiveSection = () => {
     switch (activeSection) {
@@ -90,6 +83,7 @@ export default function Home() {
         showCustomization={showCustomization}
         isExpanded={sidebarExpanded}
         onToggle={() => setSidebarExpanded(!sidebarExpanded)}
+        onExportPDF={handlePrint}
       />
 
       {/* Main Content */}
@@ -97,7 +91,10 @@ export default function Home() {
         {/* Form Section */}
         <div className="flex-1 overflow-y-auto">
           <div className="space-y-6">
-            <SectionCard title={`Edit ${activeSection}`} className="sticky top-0 z-10">
+            <SectionCard
+              title={`Edit ${activeSection}`}
+              className="sticky top-0 z-10"
+            >
               <p className="text-sm text-gray-600">
                 Update your {activeSection} information below
               </p>
@@ -106,15 +103,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Preview Section / Customization */}
         <div className="flex-1 overflow-y-auto">
           {showCustomization ? (
             <div className="sticky top-0 z-10">
-              <CustomizationPanel />
+              <CustomizationPanel setShowCustomization={setShowCustomization} />
             </div>
           ) : (
             <div className="border-2 border-gray-200 rounded-lg overflow-y-auto bg-white h-full print:border-0 print:rounded-0">
-              <ResumePreview data={resume} customization={customization} />
+              <div ref={printRef}>
+                <ResumePreview data={resume} customization={customization} />
+              </div>
             </div>
           )}
         </div>

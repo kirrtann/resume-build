@@ -128,3 +128,17 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .sans { font-family: var(--font-geist-sans), sans-serif; }
+  .serif { font-family: serif; }
+  .monospace { font-family: var(--font-geist-mono), monospace; }
+  .poppins { font-family: var(--font-poppins), sans-serif; }
+  .roboto { font-family: var(--font-roboto), sans-serif; }
+  .lato { font-family: var(--font-lato), sans-serif; }
+  .montserrat { font-family: var(--font-montserrat), sans-serif; }
+  .open-sans { font-family: var(--font-open-sans), sans-serif; }
+  .raleway { font-family: var(--font-raleway), sans-serif; }
+  .source-sans-pro { font-family: var(--font-source-sans), sans-serif; }
+  .cursive { font-family: var(--font-caveat), cursive; }
+}

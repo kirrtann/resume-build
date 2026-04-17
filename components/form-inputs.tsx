@@ -8,16 +8,23 @@ import clsx from "clsx";
 // Text Input Component
 export const TextInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & { label?: string; error?: string }
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    label?: string;
+    error?: string;
+  }
 >(({ label, error, className, ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
     <input
       ref={ref}
       className={clsx(
         "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
         error ? "border-red-500" : "border-gray-300",
-        className
+        className,
       )}
       {...props}
     />
@@ -35,13 +42,17 @@ export const TextArea = React.forwardRef<
   }
 >(({ label, error, className, ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
     <textarea
       ref={ref}
       className={clsx(
         "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
         error ? "border-red-500" : "border-gray-300",
-        className
+        className,
       )}
       {...props}
     />
@@ -60,13 +71,17 @@ export const Select = React.forwardRef<
   }
 >(({ label, error, options, className, ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
     <select
       ref={ref}
       className={clsx(
         "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white",
         error ? "border-red-500" : "border-gray-300",
-        className
+        className,
       )}
       {...props}
     >
@@ -91,14 +106,18 @@ export const DateInput = React.forwardRef<
   }
 >(({ label, error, className, ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
     <input
       ref={ref}
       type="date"
       className={clsx(
         "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
         error ? "border-red-500" : "border-gray-300",
-        className
+        className,
       )}
       {...props}
     />
@@ -120,7 +139,7 @@ export const CheckboxInput = React.forwardRef<
       type="checkbox"
       className={clsx(
         "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer",
-        className
+        className,
       )}
       {...props}
     />
@@ -143,7 +162,11 @@ export const FileInput = React.forwardRef<
   }
 >(({ label, error, accept = "image/*", className, ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
     <input
       ref={ref}
       type="file"
@@ -151,7 +174,7 @@ export const FileInput = React.forwardRef<
       className={clsx(
         "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
         error ? "border-red-500" : "border-gray-300",
-        className
+        className,
       )}
       {...props}
     />
@@ -185,11 +208,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
         variant === "outline" &&
           "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  ),
 );
 Button.displayName = "Button";
 
@@ -200,11 +223,7 @@ export const FormGroup = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => (
-  <div className={clsx("space-y-4", className)}>
-    {children}
-  </div>
-);
+}) => <div className={clsx("space-y-4", className)}>{children}</div>;
 
 // Section Card Component
 export const SectionCard = ({
@@ -216,7 +235,12 @@ export const SectionCard = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <div className={clsx("bg-white rounded-lg shadow p-6 border border-gray-200", className)}>
+  <div
+    className={clsx(
+      "bg-white rounded-lg shadow p-6 border border-gray-200",
+      className,
+    )}
+  >
     <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
     {children}
   </div>
@@ -238,7 +262,7 @@ export const FormGrid = ({
       cols === 1 && "grid grid-cols-1",
       cols === 2 && "grid grid-cols-1 md:grid-cols-2",
       cols === 3 && "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-      className
+      className,
     )}
   >
     {children}

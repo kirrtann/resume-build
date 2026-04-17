@@ -6,7 +6,8 @@
 import React from "react";
 import { ResumeData, CustomizationSettings } from "@/lib/types";
 import clsx from "clsx";
-
+import "@/components/ui/print.css";
+import Image from "next/image";
 interface ResumePreviewProps {
   data: ResumeData;
   customization: CustomizationSettings;
@@ -16,21 +17,14 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
   data,
   customization,
 }) => {
-  const { theme, darkMode, sectionsVisibility, primaryColor } = customization;
+  const { theme } = customization;
 
-  // Choose template based on theme
   if (theme === "minimal") {
-    return (
-      <MinimalTemplate data={data} customization={customization} />
-    );
+    return <MinimalTemplate data={data} customization={customization} />;
   } else if (theme === "creative") {
-    return (
-      <CreativeTemplate data={data} customization={customization} />
-    );
+    return <CreativeTemplate data={data} customization={customization} />;
   } else {
-    return (
-      <ProfessionalTemplate data={data} customization={customization} />
-    );
+    return <ProfessionalTemplate data={data} customization={customization} />;
   }
 };
 
@@ -39,47 +33,60 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
   data,
   customization,
 }) => {
-  const { darkMode, primaryColor, sectionsVisibility } = customization;
+  const { darkMode, primaryColor, sectionsVisibility, fontFamily } =
+    customization;
 
   return (
     <div
       id="resume-preview"
       className={clsx(
-        "w-full max-w-4xl mx-auto p-12 print:p-0",
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
+        "w-full max-w-4xl mx-auto p-4 print:p-0 Print-style",
+        fontFamily,
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900",
       )}
     >
       {/* Header */}
-      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: primaryColor }}>
+      <div
+        className="mb-5 pb-4 border-b-2"
+        style={{
+          borderColor: primaryColor,
+          fontFamily: fontFamily,
+        }}
+      >
         <div className="flex items-start justify-between">
           {data.personalInfo.profilePhoto && (
-            <img
+            <Image
               src={data.personalInfo.profilePhoto}
               alt={data.personalInfo.fullName}
+              width={80}
+              height={80}
+              unoptimized
               className="w-20 h-20 rounded-lg object-cover mr-4"
             />
           )}
-          <div className="flex-1">
+          <div className="flex-1 ">
             <h1
               className="text-4xl font-bold mb-1"
               style={{ color: primaryColor }}
             >
               {data.personalInfo.fullName || "Your Name"}
             </h1>
-            <p className="text-lg opacity-75">
+            <p
+              style={{ fontFamily: fontFamily }}
+              className="text-lg opacity-75 max-h-[150px] overflow-hidden"
+            >
               {data.personalInfo.summary || "Professional Summary"}
             </p>
           </div>
         </div>
 
         {/* Contact Info */}
-        <div className="mt-4 flex flex-wrap gap-4 text-sm">
-          {data.personalInfo.email && (
-            <span>{data.personalInfo.email}</span>
-          )}
-          {data.personalInfo.phone && (
-            <span>{data.personalInfo.phone}</span>
-          )}
+        <div
+          className="mt-4 flex flex-wrap gap-4 text-sm"
+          style={{ fontFamily: fontFamily }}
+        >
+          {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
+          {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
           {data.personalInfo.location && (
             <span>{data.personalInfo.location}</span>
           )}
@@ -98,7 +105,7 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
       {/* Experience */}
       {sectionsVisibility.experience && data.experience.length > 0 && (
         <Section title="Experience" primaryColor={primaryColor}>
-          <div className="space-y-4">
+          <div className="space-y-4" style={{ fontFamily: fontFamily }}>
             {data.experience.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-start mb-1">
@@ -126,7 +133,7 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
       {/* Education */}
       {sectionsVisibility.education && data.education.length > 0 && (
         <Section title="Education" primaryColor={primaryColor}>
-          <div className="space-y-4">
+          <div className="space-y-4" style={{ fontFamily: fontFamily }}>
             {data.education.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-start mb-1">
@@ -153,15 +160,16 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
       {/* Skills */}
       {sectionsVisibility.skills && data.skills.length > 0 && (
         <Section title="Skills" primaryColor={primaryColor}>
-          <div className="flex flex-wrap gap-2">
+          <div
+            className="flex flex-wrap gap-2"
+            style={{ fontFamily: fontFamily }}
+          >
             {data.skills.map((skill) => (
               <div
                 key={skill.id}
                 className={clsx(
                   "px-3 py-1 rounded text-sm",
-                  darkMode
-                    ? "bg-gray-800"
-                    : "bg-gray-100"
+                  darkMode ? "bg-gray-800" : "bg-gray-100",
                 )}
               >
                 <span className="font-medium">{skill.name}</span>
@@ -208,21 +216,20 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
       )}
 
       {/* Certifications */}
-      {sectionsVisibility.certifications &&
-        data.certifications.length > 0 && (
-          <Section title="Certifications" primaryColor={primaryColor}>
-            <div className="space-y-3">
-              {data.certifications.map((cert) => (
-                <div key={cert.id}>
-                  <h3 className="font-semibold">{cert.name}</h3>
-                  <p className="text-sm opacity-75">
-                    {cert.issuer} • {cert.issueDate}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
+      {sectionsVisibility.certifications && data.certifications.length > 0 && (
+        <Section title="Certifications" primaryColor={primaryColor}>
+          <div className="space-y-3">
+            {data.certifications.map((cert) => (
+              <div key={cert.id}>
+                <h3 className="font-semibold">{cert.name}</h3>
+                <p className="text-sm opacity-75">
+                  {cert.issuer} • {cert.issueDate}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Languages */}
       {sectionsVisibility.languages && data.languages.length > 0 && (
@@ -242,8 +249,14 @@ const ProfessionalTemplate: React.FC<ResumePreviewProps> = ({
       {sectionsVisibility.customSections && data.customSections.length > 0 && (
         <>
           {data.customSections.map((section) => (
-            <Section key={section.id} title={section.title} primaryColor={primaryColor}>
-              <p className="text-sm whitespace-pre-wrap">{section.description}</p>
+            <Section
+              key={section.id}
+              title={section.title}
+              primaryColor={primaryColor}
+            >
+              <p className="text-sm whitespace-pre-wrap">
+                {section.description}
+              </p>
             </Section>
           ))}
         </>
@@ -263,22 +276,21 @@ const MinimalTemplate: React.FC<ResumePreviewProps> = ({
     <div
       id="resume-preview"
       className={clsx(
-        "w-full max-w-4xl mx-auto p-12 print:p-0",
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
+        "w-full max-w-4xl mx-auto p-14 print:p-0",
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900",
       )}
     >
       {/* Compact Header */}
       <div className="mb-6">
-        <h1
-          className="text-3xl font-bold"
-          style={{ color: primaryColor }}
-        >
+        <h1 className="text-3xl font-bold" style={{ color: primaryColor }}>
           {data.personalInfo.fullName}
         </h1>
         <div className="flex flex-wrap gap-3 text-sm mt-2 opacity-75">
           {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
           {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
-          {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
+          {data.personalInfo.location && (
+            <span>{data.personalInfo.location}</span>
+          )}
         </div>
       </div>
 
@@ -295,7 +307,8 @@ const MinimalTemplate: React.FC<ResumePreviewProps> = ({
                 {exp.position} • {exp.company}
               </div>
               <div className="opacity-75">
-                {exp.startDate} - {exp.currentlyWorking ? "Present" : exp.endDate}
+                {exp.startDate} -{" "}
+                {exp.currentlyWorking ? "Present" : exp.endDate}
               </div>
             </div>
           ))}
@@ -355,8 +368,14 @@ const MinimalTemplate: React.FC<ResumePreviewProps> = ({
       {sectionsVisibility.customSections && data.customSections.length > 0 && (
         <>
           {data.customSections.map((section) => (
-            <MinimalSection key={section.id} title={section.title} primaryColor={primaryColor}>
-              <p className="text-sm whitespace-pre-wrap">{section.description}</p>
+            <MinimalSection
+              key={section.id}
+              title={section.title}
+              primaryColor={primaryColor}
+            >
+              <p className="text-sm whitespace-pre-wrap">
+                {section.description}
+              </p>
             </MinimalSection>
           ))}
         </>
@@ -370,25 +389,25 @@ const CreativeTemplate: React.FC<ResumePreviewProps> = ({
   data,
   customization,
 }) => {
-  const { darkMode, primaryColor, secondaryColor, sectionsVisibility } = customization;
+  const { darkMode, primaryColor, secondaryColor, sectionsVisibility } =
+    customization;
 
   return (
     <div
       id="resume-preview"
       className={clsx(
         "w-full max-w-4xl mx-auto print:p-0",
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900",
       )}
     >
-      {/* Colored Header */}
-      <div
-        className="p-12 text-white"
-        style={{ backgroundColor: primaryColor }}
-      >
+      <div className="p-4 text-white" style={{ backgroundColor: primaryColor }}>
         {data.personalInfo.profilePhoto && (
-          <img
+          <Image
             src={data.personalInfo.profilePhoto}
             alt={data.personalInfo.fullName}
+            width={96}
+            height={96}
+            unoptimized
             className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white"
           />
         )}
@@ -406,22 +425,22 @@ const CreativeTemplate: React.FC<ResumePreviewProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-12">
+      <div className="p-4">
         {sectionsVisibility.experience && data.experience.length > 0 && (
           <CreativeSection title="Experience" primaryColor={primaryColor}>
             {data.experience.map((exp) => (
               <div key={exp.id} className="mb-4 pb-4 border-b border-gray-200">
                 <h3 className="font-semibold text-lg">{exp.position}</h3>
-                <p
-                  className="font-medium"
-                  style={{ color: secondaryColor }}
-                >
+                <p className="font-medium" style={{ color: secondaryColor }}>
                   {exp.company}
                 </p>
                 <p className="text-sm opacity-75 mb-2">
-                  {exp.startDate} - {exp.currentlyWorking ? "Present" : exp.endDate}
+                  {exp.startDate} -{" "}
+                  {exp.currentlyWorking ? "Present" : exp.endDate}
                 </p>
-                {exp.description && <p className="text-sm">{exp.description}</p>}
+                {exp.description && (
+                  <p className="text-sm">{exp.description}</p>
+                )}
               </div>
             ))}
           </CreativeSection>
@@ -480,15 +499,22 @@ const CreativeTemplate: React.FC<ResumePreviewProps> = ({
           </CreativeSection>
         )}
 
-        {sectionsVisibility.customSections && data.customSections.length > 0 && (
-          <>
-            {data.customSections.map((section) => (
-              <CreativeSection key={section.id} title={section.title} primaryColor={primaryColor}>
-                <p className="text-sm whitespace-pre-wrap">{section.description}</p>
-              </CreativeSection>
-            ))}
-          </>
-        )}
+        {sectionsVisibility.customSections &&
+          data.customSections.length > 0 && (
+            <>
+              {data.customSections.map((section) => (
+                <CreativeSection
+                  key={section.id}
+                  title={section.title}
+                  primaryColor={primaryColor}
+                >
+                  <p className="text-sm whitespace-pre-wrap">
+                    {section.description}
+                  </p>
+                </CreativeSection>
+              ))}
+            </>
+          )}
       </div>
     </div>
   );
@@ -517,10 +543,7 @@ const MinimalSection: React.FC<{
   children: React.ReactNode;
 }> = ({ title, primaryColor, children }) => (
   <div className="mb-6">
-    <h2
-      className="text-lg font-bold mb-2"
-      style={{ color: primaryColor }}
-    >
+    <h2 className="text-lg font-bold mb-2" style={{ color: primaryColor }}>
       {title}
     </h2>
     {children}

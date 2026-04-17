@@ -7,21 +7,21 @@ import {
   TextInput,
   TextArea,
   FileInput,
-  Button,
   FormGroup,
   FormGrid,
 } from "@/components/form-inputs";
 import { useResumeStore } from "@/lib/resume-store";
 import { Trash2, Upload } from "lucide-react";
+import Image from "next/image";
 
 export const PersonalInfoForm = () => {
   const { resume, updatePersonalInfo } = useResumeStore();
   const [photoPreview, setPhotoPreview] = useState<string | null>(
-    resume.personalInfo.profilePhoto || null
+    resume.personalInfo.profilePhoto || null,
   );
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     updatePersonalInfo({ [name]: value });
@@ -47,13 +47,15 @@ export const PersonalInfoForm = () => {
 
   return (
     <div className="space-y-6">
-      {/* Photo Section */}
       <div className="flex flex-col items-center space-y-3">
         {photoPreview ? (
           <div className="relative">
-            <img
+            <Image
               src={photoPreview}
               alt="Profile"
+              width={96}
+              height={96}
+              unoptimized
               className="w-24 h-24 rounded-lg object-cover border-4 border-blue-200"
             />
             <button
