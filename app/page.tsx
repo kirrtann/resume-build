@@ -24,7 +24,7 @@ export default function Home() {
 
   const { resume, customization, activeSection } = useResumeStore();
 
-  const { saveToLocalStorage, loadFromLocalStorage } = useResumeLocalStorage();
+  const { saveToLocalStorage, loadFromLocalStorage,clearLocalStorage } = useResumeLocalStorage();
   const printRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
@@ -33,7 +33,16 @@ export default function Home() {
       ? `${resume.personalInfo.fullName.replace(/\\s+/g, "_")}_Resume`
       : "Resume",
   });
+const handleResetData = () => {
+const confirmReset = window.confirm(
+"Are you sure you want to reset all data? This action cannot be undone."
+);
+if (confirmReset) {
+clearLocalStorage();
+window.location.reload();
 
+}
+}
   useEffect(() => {
     const saved = loadFromLocalStorage();
     if (saved) {
@@ -84,6 +93,7 @@ export default function Home() {
         isExpanded={sidebarExpanded}
         onToggle={() => setSidebarExpanded(!sidebarExpanded)}
         onExportPDF={handlePrint}
+        onResetData={handleResetData}
       />
 
       {/* Main Content */}

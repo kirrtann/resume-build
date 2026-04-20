@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   Plus,
+  Trash,
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "@/components/form-inputs";
@@ -25,6 +26,7 @@ interface SidebarProps {
   isExpanded?: boolean;
   onToggle?: () => void;
   onExportPDF?: () => void;
+  onResetData?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -33,6 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isExpanded = true,
   onToggle,
   onExportPDF,
+  onResetData,
 }) => {
   const { activeSection, setActiveSection, undo, redo, history, historyIndex } =
     useResumeStore();
@@ -176,11 +179,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <div className="border-t border-gray-200 p-4 space-y-2">
-        {isExpanded && (
-          <p className="text-xs font-semibold text-gray-600 uppercase mb-3">
-            Export
-          </p>
-        )}
+      
 
         <div className="space-y-2">
           <Button
@@ -195,6 +194,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <Download size={16} />
             {isExpanded && <span className="ml-2">PDF</span>}
+          </Button>
+           <Button
+            onClick={onResetData}
+            size="sm"
+            variant="primary"
+            className={clsx(
+              "w-full text-xs justify-content items-center bg-red-500 hover:bg-red-600",
+              !isExpanded && "py-2",
+            )}
+            title="Reset Data"
+          >
+           <Trash size={16} />
+            {isExpanded && <span className="ml-2">Reset Resume</span>}
           </Button>
         </div>
       </div>
